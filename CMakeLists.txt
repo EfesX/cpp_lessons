@@ -72,3 +72,15 @@ include(CPack)
 enable_testing()
 
 add_test(test_version test_version)
+
+find_package(GTest CONFIG REQUIRED)
+add_executable(gtest test_version_gtest.cpp)
+
+target_link_libraries(
+    gtest
+    GTest::gtest
+    GTest::gmock
+    helloworld
+)
+
+add_test(version_gtest gtest)
