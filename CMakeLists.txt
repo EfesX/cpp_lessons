@@ -79,7 +79,6 @@ add_executable(gtest test_version_gtest.cpp)
 target_link_libraries(
     gtest
     GTest::gtest
-    GTest::gmock
     helloworld
 )
 
