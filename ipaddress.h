@@ -1,50 +1,60 @@
+#pragma once
+
 #include <string>
 #include <vector>
 #include <ranges>
+#include <set>
 
-class IPAddress 
+class IPAddress : public std::vector<int>
 {
-private:
-    std::vector<int> _oc;
 public:
     IPAddress(std::vector<std::string> ip);
-
+    void print();
     bool operator>(const IPAddress& val);
-    void print();
-    int operator[](const int& idx) const;
+    bool operator<(const IPAddress& val);
 };
 
-class IPPool 
+
+template<class T, class F>
+void filter(T& ips, int val, F op)
 {
-private:
-    std::vector<IPAddress> _ip;
-public:
-    void add(IPAddress ip);
-    void sort();
-    void print();
 
-    auto filter(const int& n3)
-    {
-        return std::views::filter(_ip, [&](const IPAddress& ip){ 
-            return (ip[3] == n3);
-        });
-    }
+    auto view = std::views::filter(ips, [&](const IPAddress& ip){
+        return (ip.at(3) == val);
+    });
 
-    auto filter(const int& n3, const int& n2)
+    for (auto v : view)
     {
-        return std::views::filter(_ip, [&](const IPAddress& ip){ 
-            return ((ip[3] == n3) && (ip[2] == n2));
-        });
+        op(v);
     }
+}
 
-    auto filter_any(const int& any)
+template<class T, class F>
+void filter(T& ips, int val1, int val2, F op)
+{
+    auto view = std::views::filter(ips, [&](const IPAddress& ip){
+        return (ip.at(3) == val1) && (ip.at(2) == val2);
+    });
+
+    for (auto v : view)
     {
-        return std::views::filter(_ip, [&](const IPAddress& ip){ 
-            for(int i = 0; i < 4; ++i)
-            {
-                if(ip[i] == any) return true;
-            }
-            return false;
-        });
+        op(v);
     }
-};
+}
+
+template<class T, class F>
+void filter_any(T& ips, int val, F op)
+{
+    auto view = std::views::filter(ips, [&](const IPAddress& ip){
+        for(int i = 0; i < 4; ++i)
+        {
+            if(ip[i] == 46) return true;
+        }
+        return false;
+    });
+
+    for (auto v : view)
+    {
+        op(v);
+    }
+}

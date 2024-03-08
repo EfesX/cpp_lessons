@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <algorithm>
 
 #include "ipaddress.h"
 
@@ -25,36 +27,45 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
-int main(int argc, char const *argv[])
+template<class T>
+void print(T& ips)
 {
+    for (auto val : ips)
+    {
+        val.print();
+    }
+}
 
+
+int main(int argc, char **argv)
+{
     try
     {
-        IPPool ip_pool;
+        std::vector<IPAddress> ips;
 
         for(std::string line; std::getline(std::cin, line);)
         {
             std::vector<std::string> v = split(line, '\t');
-            ip_pool.add(split(v.at(0), '.'));
+            ips.push_back(IPAddress(split(v.at(0), '.')));
         }
 
+        std::sort(ips.begin(), ips.end(), [](IPAddress& a, const IPAddress& b){
+            return (a > b);
+        });
 
-        ip_pool.sort();
-        ip_pool.print();
+        print(ips);
 
-        
-        for(auto ip : ip_pool.filter(1)){
+        filter(ips, 1, [](auto ip){
             ip.print();
-        }
+        });
 
-        for(auto ip : ip_pool.filter(46, 70)){
+        filter(ips, 46, 70, [](auto ip){
             ip.print();
-        }
-        
-        for(auto ip : ip_pool.filter_any(46)){
+        });
+
+        filter_any(ips, 46, [](auto ip){
             ip.print();
-        }
-        
+        });
     }
     catch(const std::exception &e)
     {
