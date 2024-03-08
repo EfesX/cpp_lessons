@@ -1,0 +1,18 @@
+name: 'C++ CI'
+
+on:
+  push:
+    branches:
+      - hw002
+      - feature/github_actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - run: sudo apt-get update && sudo apt-get install libgtest-dev -y
+      - run: cmake --build .
+      - run: cmake --build . --target test
