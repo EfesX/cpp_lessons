@@ -1,0 +1,7 @@
+PROJECT_NAME = "hw004"
+PROJECT_NUMBER = 0.2
+PROJECT_BRIEF = "Домашнее задание по теме метапрограммирования"
+OUTPUT_DIRECTORY = "docs"
+GENERATE_LATEX = NO
+INPUT = .
+EXTRACT_ALL = yes
