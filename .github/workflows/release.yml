@@ -17,5 +17,5 @@ jobs:
       - run: cmake .
       - run: cmake --build .
       - run: cmake --build . --target package
-      - run: ./hw004
+      - run: ./print_ip
       - run: doxygen
